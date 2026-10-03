@@ -78,6 +78,11 @@ This repository is structured as a progressive CI/CD interview course:
 - **[Interview_Security_Engineering](https://github.com/BrendanJamesLynskey/Interview_Security_Engineering)** — Application and infrastructure security
 - **[Interview_System_Design](https://github.com/BrendanJamesLynskey/Interview_System_Design)** — System design interview preparation
 
+## Related Repositories
+
+- **[Jenkins for Hardware and Simulation Teams](https://brendanjameslynskey.github.io/SimEng_07_Jenkins_for_Simulation_Teams/)** — declarative and scripted pipelines, matrix builds, shared libraries, JUnit and coverage, nightly regressions, performance gates and credentials, from real Jenkins runs of five simulator repositories ([Simulation Engineering Toolkit](https://github.com/BrendanJamesLynskey/SimEng_Hub_Toolkit))
+- **[Performance Analysis of Simulators and Systems](https://brendanjameslynskey.github.io/SimEng_11_Performance_Analysis/)** — designing CI regression gates from measured timing noise ([Simulation Engineering Toolkit](https://github.com/BrendanJamesLynskey/SimEng_Hub_Toolkit))
+
 ## Contributing
 
 Contributions are welcome. Please ensure:
