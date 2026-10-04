@@ -1317,3 +1317,51 @@ For the 3-5 worst-performing teams:
 - **One-shot fix-it weeks.** Improvement reverts within a quarter. Make it ongoing measurement and continuous coaching.
 
 **Interview insight:** for staff/principal interviews, this is a near-certain question domain. Articulating the *programme* (measure → publish → fix systemic → coach specific → sustain) demonstrates you've operated at the org level, not just the repo level. Naming specific systemic levers (shared base image, remote cache, runner pool) makes it concrete.
+
+### Q19. What are golden tests, parity tests and differential tests, and when does numeric or simulation code need them?
+
+**Answer:**
+
+Unit tests check behaviour ("returns a list of three"). Numeric code, simulators and ports need tests that pin **numbers**:
+
+| Test | What it compares | Example |
+|---|---|---|
+| **Golden (headline-number) test** | Output against a saved, reviewed answer | CI asserts a simulator's baseline result is still exactly `13.94` ms per operation |
+| **Parity test** | Two implementations of the same model, on fixed inputs | A JavaScript port must be **bit-exact** with the Python reference (identical floats) |
+| **Differential test** | Two implementations on **random** inputs | A Rust kernel and the Python simulator run the same generated workloads; outputs must match |
+
+Practicalities:
+
+- **Fixtures** (the saved inputs and answers) live in git. A broad `.gitignore` rule such as `*.json` can hide a new fixture: the test passes locally and fails in CI with "file not found". Add an explicit exception.
+- **Re-blessing** a golden value must be a deliberate, reviewed change with a reason in the commit, never a reflex when the test goes red.
+- **Exact vs tolerant:** compare integer and plain arithmetic results exactly; give transcendental functions (`exp`, `log`, `pow`) a tolerance, because language runtimes may round them differently. Keep the floating-point operation order identical across ports, or bit-exactness is lost.
+- Add **property-based** tests (Hypothesis, proptest) for invariants such as conservation ("tokens out equal tokens in") and **mutation testing** to check the suite would catch a planted bug.
+
+**Interview insight:** say what a golden test can't tell you: that the saved answer was right in the first place. Pair it with an independent check (a reference implementation, an analytic case) when the golden value is created.
+
+### Q20. Why run end-to-end tests against a production build, and what else can make CI disagree with production?
+
+**Answer:**
+
+A framework's **dev server** differs from what ships: no minification or tree-shaking, different module loading, more permissive error handling, hot reload. Running e2e (Playwright, Cypress) against the dev server tests a different program.
+
+Run e2e against the production build instead:
+
+```ts
+// playwright.config.ts (CI branch)
+webServer: {
+  command: "pnpm build && node --no-experimental-require-module node_modules/next/dist/bin/next start -p 3000",
+  url: "http://localhost:3000",
+}
+```
+
+The extra Node flag in that command is there because CI's Node (20.19+/22.12+) allows `require()` of an ES module, but the hosting platform's function loader did not, so a dependency that worked in CI returned 500 in production. Running CI under the stricter rule turned that class of bug into a failing PR.
+
+Other CI-vs-production gaps to close or check after deploy:
+
+- **Runtime version** (pin it in both places).
+- **Environment variables** that exist in production only (or are empty locally because they are write-only).
+- **Database state**: CI migrates a fresh database; production may be unmigrated or have real data that exercises different code paths.
+- **File system and network**: read-only file systems, no outbound access, cold starts.
+
+Whatever can't be made identical needs a **post-deploy smoke check** against the live system.

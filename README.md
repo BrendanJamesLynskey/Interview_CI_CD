@@ -7,6 +7,8 @@
 
 This repository provides interview preparation material for software engineering roles that require practical expertise in continuous integration, continuous delivery, and continuous deployment. The content covers pipeline design, deployment strategies, release management, tooling, testing in CI, and modern supply chain security.
 
+The ten topic files hold 186 questions, and the two quizzes 50 more.
+
 The material targets Senior Software Engineers interviewing for backend, platform, DevOps, and SRE-adjacent positions at companies that ship software frequently and safely. Code examples use realistic GitHub Actions YAML, Jenkinsfiles, GitLab CI, and shell/Python snippets that mirror real production pipelines.
 
 ## Table of Contents
@@ -34,6 +36,7 @@ Getting validated changes into production safely, with strategies to limit blast
 
 - [`deployment_strategies.md`](02_continuous_delivery_and_deployment/deployment_strategies.md) — Blue-green, canary, rolling, feature flags, dark launches
 - [`release_management.md`](02_continuous_delivery_and_deployment/release_management.md) — Semantic versioning, changelogs, release gates, rollback strategies
+- [`deploying_and_verifying.md`](02_continuous_delivery_and_deployment/deploying_and_verifying.md) — Preview vs production, env vars and write-only secrets, migrate-before-deploy, health endpoints, smoke checks, runbooks, OAuth callbacks and 308 redirects, failures CI misses, rulesets vs branch protection
 
 ### 03 Pipeline Tooling
 
@@ -46,7 +49,7 @@ The concrete tools that implement CI/CD in practice, and the ecosystem of regist
 
 Ensuring that the CI/CD system itself produces trustworthy output — fast, correct, and tamper-resistant.
 
-- [`testing_in_pipelines.md`](04_pipeline_quality_and_security/testing_in_pipelines.md) — Test pyramid in CI, flaky tests, test parallelisation, test selection
+- [`testing_in_pipelines.md`](04_pipeline_quality_and_security/testing_in_pipelines.md) — Test pyramid in CI, flaky tests, test parallelisation, test selection, golden/parity/differential tests, e2e on a production build
 - [`supply_chain_security.md`](04_pipeline_quality_and_security/supply_chain_security.md) — SBOMs, SLSA, signed commits, secret scanning, dependency scanning
 - [`compliance_and_governance.md`](04_pipeline_quality_and_security/compliance_and_governance.md) — Audit trails, approval workflows, SOC2, change management
 
